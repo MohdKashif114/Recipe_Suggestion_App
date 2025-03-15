@@ -1,0 +1,57 @@
+import mongoose from "mongoose";
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+
+dotenv.config();
+
+
+
+
+const signupcontroller=async (req,res)=>{
+    const username=req.body.username;
+    const password=req.body.password;
+    const email=req.body.email;
+    try{
+        const finduser=await User.findOne({Username:username})
+        if(finduser){
+            console.log("user already signed up")
+            return res.status(400).json({
+                success:false,
+                message:"user already exists"
+            })
+        }
+        const saltRounds=10;
+        let hashedpw;
+        try{
+            hashedpw=await bcrypt.hash(password, saltRounds);
+        }catch(err){
+            res.status(400).json({
+                success:false,
+                message:"Can't hash password"
+            })
+        }
+       
+        const user=new User({Username:username,Password:hashedpw,Email:email})
+        const saveduser=await user.save();
+        const token=jwt.sign({id:username},process.env.JWT_SECRET,{expiresIn:"1h"});
+        res.cookie("token",token,{maxAge:1*60*60*1000,httpOnly:true});
+        res.status(200).json({success:true,message:"Cookie created succesfully"})
+
+    }catch(err){
+        console.log(err)
+        res.status(400).json({success:false,message:"Some error occured while creating cookie"})
+    }
+    
+
+
+
+
+    
+
+}
+
+
+export default signupcontroller
