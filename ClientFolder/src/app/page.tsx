@@ -12,10 +12,11 @@ const altpic="/images/fastfoodpic.jpg"
 export default function Home() {
   
   interface post {
-    recipeName: string;
-    imageUrl: string;
-    instructions: string;
-    description:string;
+    RecipeId:number;
+    RecipeName: string;
+    ImageUrl: string;
+    RecipeInstruction: string;
+    RecipeDescription:string;
   }
   interface posts {
     recipes:post[];
@@ -26,7 +27,7 @@ export default function Home() {
 
   async function fetchRecipes() {
     // try {
-    //     const res = await fetch('http://localhost:6000/generate-recipe', {
+    //     const res = await fetch('http://localhost:6500/generate-recipe', {
     //       method: "POST",
     //       headers: {
     //         "Content-Type": "application/json",

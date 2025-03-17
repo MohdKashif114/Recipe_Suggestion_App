@@ -9,15 +9,17 @@ interface information{
     lastname:string,
     email:string,
     password:string,
-    confirmpassword:string
+    confirmpassword:string,
+    username:string
 }
 
 
 
 const page = () => {
 
-     const [information,setInformation]=useState<information>({email:"",password:"",firstname:"",lastname:"",confirmpassword:""});
-     const [data,formAction,isPending]=useActionState(signupValidation,undefined)
+     const [information,setInformation]=useState<information>({username:"",email:"",password:"",firstname:"",lastname:"",confirmpassword:""});
+    //  const [data,formAction,isPending]=useActionState(signupValidation,undefined)
+    const [loading,setloading]=useState<boolean>(false);
 
 
         const handleinformation=(event:React.ChangeEvent<HTMLInputElement>)=>{
@@ -27,13 +29,46 @@ const page = () => {
             }))
             console.log(information);
         }
+
+
+        const signuphandler=async(event:React.FormEvent<HTMLFormElement>)=>{
+            event.preventDefault();
+            setloading(true);
+            try{
+                const res=await fetch("http://localhost:6500/auth/signup",{
+                  method:"POST",
+                  headers:{
+                    "Content-Type":"application/json"
+                  },
+                  body:JSON.stringify({username:information.username,password:information.password,email:information.email}),
+                  credentials:"include"
+                })
+            
+                const finalres=await res.json();
+                console.log(finalres);
+                console.log("signup is successfull")
+                setloading(false);
+                return{
+                  ...finalres,
+                  message:"Signup successfull"
+                }
+            
+            
+              }catch(err){
+                setloading(false);
+                console.log("some err occurred",err)
+                return {message:"some err occurred"}
+              }
+        }
+
+
     
 
 
   return (
     <div>
         <NavBar/>
-            <form action={formAction} className='flex flex-col gap-4 items-center justify-center'>
+            <form onSubmit={signuphandler} className='flex flex-col gap-4 items-center justify-center'>
             <h1>Ello!! This is a Signup page</h1>
                 <div className=''>
                     <div>
@@ -54,12 +89,20 @@ const page = () => {
                         onChange={(e)=>handleinformation(e)}
                     ></input>
                     </div>
-                    <label>Enter Username:</label>
+                    <label>Enter Email:</label>
                     <input
                         placeholder='Enter your email'
                         id="email"
                         name="email"
                         value={information.email}
+                        onChange={(e)=>handleinformation(e)}
+                    ></input>
+                    <label>Username:</label>
+                    <input
+                        placeholder='Enter your username'
+                        id="username"
+                        name="username"
+                        value={information.username}
                         onChange={(e)=>handleinformation(e)}
                     ></input>
                 </div>
@@ -91,9 +134,10 @@ const page = () => {
                 <button>Submit</button>
             </form>
             <div>
-                {isPending && (<p>submitting....</p>)}
+                {loading && <p>loading...</p>}
+                {/* {isPending && (<p>submitting....</p>)}
                 {data?.message && (<p className='bg-green-400'>{data.message}</p>)}
-                {data?.errors && (<p className='bg-red-500'>{data.errors.password}</p>)}
+                {data?.errors && (<p className='bg-red-500'>{data.errors.password}</p>)} */}
             </div>
             
     </div>

@@ -33,5 +33,4 @@ const logincontroller=async (req,res)=>{
 }
 
 
-
 export default logincontroller;

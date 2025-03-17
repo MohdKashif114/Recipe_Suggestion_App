@@ -14,8 +14,9 @@ const signupcontroller=async (req,res)=>{
     const username=req.body.username;
     const password=req.body.password;
     const email=req.body.email;
+    console.log(username);
     try{
-        const finduser=await User.findOne({Username:username})
+        const finduser=await User.findOne({UserName:username})
         if(finduser){
             console.log("user already signed up")
             return res.status(400).json({
@@ -34,24 +35,23 @@ const signupcontroller=async (req,res)=>{
             })
         }
        
-        const user=new User({Username:username,Password:hashedpw,Email:email})
+        const user=new User({UserName:username,Password:hashedpw,Email:email})
         const saveduser=await user.save();
+        console.log("creating jwt");
         const token=jwt.sign({id:username},process.env.JWT_SECRET,{expiresIn:"1h"});
-        res.cookie("token",token,{maxAge:1*60*60*1000,httpOnly:true});
+        console.log("creatie cookie")
+        res.cookie("token",token,{maxAge:1*60*60*1000,httpOnly:true,secure: false,sameSite: "lax"});
+        console.log("Set-Cookie:", res.getHeaders()["set-cookie"]); 
         res.status(200).json({success:true,message:"Cookie created succesfully"})
 
     }catch(err){
         console.log(err)
         res.status(400).json({success:false,message:"Some error occured while creating cookie"})
-    }
-    
-
-
-
-
-    
-
+    }    
 }
 
 
 export default signupcontroller
+
+
+

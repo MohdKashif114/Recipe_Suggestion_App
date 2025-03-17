@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const Recipeschema=new mongoose.Schema({
     RecipeId:{
-        type: String,
+        type: Number,
         required:true,
         unique:true
     },
@@ -18,7 +18,6 @@ const Recipeschema=new mongoose.Schema({
     },
     RecipeInstruction:{
         type:String,
-        required:true
     },
     ImageUrl:{
         type:String,

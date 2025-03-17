@@ -1,32 +1,34 @@
 import mongoose from "mongoose";
-import Recipe from "./Recipe";
-import User from "./User";
+import Recipe from "./Recipe.js";
+import User from "./User.js";
 
 
-const Interactions=new mongoose.Schema({
-    UserId:{
-        type:mongoose.Schema.Types.ObjectId,
+const Interaction=new mongoose.Schema({
+    UserName:{
+        type:String,
         ref:"User",
         required:true
     },
     RecipeId:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Number,
         ref:"Recipe",
         required:true
     },
     Comment:{
         type:String,
+        default:""
     },
     Rating:{
         type:Number,
         min:1,
-        max:5
+        max:5,
+        dafault:0
     },
     Like:{
         type:Boolean,
         default:false
-    }
+    },
+},{timestamps:true}
+);
 
-});
-
-export default mongoose.model("Interactions",Interactions)
+export default mongoose.model("Interaction",Interaction)

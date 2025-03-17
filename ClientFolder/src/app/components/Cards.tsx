@@ -1,10 +1,11 @@
 import RecipeCard from "./RecipeCard"
 
 interface post {
-    recipeName: string;
-    imageUrl: string;
-    instructions: string;
-    description:string;
+    RecipeId:number;
+    RecipeName: string;
+    ImageUrl: string;
+    RecipeInstruction: string;
+    RecipeDescription:string;
   }
   interface posts {
     recipes:post[];

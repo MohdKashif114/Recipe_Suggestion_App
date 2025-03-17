@@ -44,7 +44,7 @@ const schema = {
 
         const recipe_data=await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients.join(",+")}&ranking=1&apiKey=${process.env.SpoonApi_Key}`)
         const recipes=await recipe_data.json();
-        console.log(recipes);
+        // console.log(recipes);
         const finalformatfunc=(recipes)=>{
             return recipes.map((recipe)=>({
                     recipeId:recipe.id,
@@ -65,42 +65,44 @@ const schema = {
             finalformat.map(async (recipePar)=>{
 
             const name=recipePar.recipeName;
+            const recipeid=recipePar.recipeId;
               try{
-               
-
-                const prompt = `Give a mouth watering description of ${name} of atleast 50 words`;
-              
-                  const result = await model.generateContent(prompt);
-                  if(!result || !result.response){
-                      
-                      return{
-                        ...recipePar,
-                        description: await happyfacetext(name),
-                      }
-                    }
-                    const recipeDesNIns = JSON.parse(await result.response.text());
+                const dbrecipe=await Recipe.findOne({RecipeId:recipeid});
+                if(dbrecipe){
+                  console.log("fetching recipe form the db")
+                  return dbrecipe;
+                }
+                
+                let recipeDesNIns={description:""};
+                  const prompt = `Give a mouth watering description of ${name} of atleast 50 words`;
+                  recipeDesNIns.description=await happyfacetext(name);
+                
+                
+                    
+                    
                     console.log(recipeDesNIns);
+                    console.log("saving recipe....")
+                    try{
+                      const recipeInst=new Recipe({
+                        RecipeId:recipePar.recipeId,
+                        RecipeName:recipePar.recipeName,
+                        ImageUrl:recipePar.imageUrl,
+                        RecipeInstruction:recipePar.instructions,
+                        RecipeDescription:recipeDesNIns.description
+                      })
+                      const savedrecipe= await recipeInst.save();
+                    }catch(err){
+                      console.error("Error saving recipe:", err);
+                      return {
+                        ...recipePar,
+                        saveError: "Failed to save recipe",
+                      };
+                    }
 
                   return{
                     ...recipePar,
                     description:recipeDesNIns.description,
                   }
-
-
-      
-      
-               
-      
-                // const recipeInst=new Recipe({
-                //   RecipeId:recipePar.recipeId,
-                //   RecipeName:recipePar.recipeName,
-                //   ImageUrl:recipePar.imageUrl,
-                //   RecipeInstruction:recipePar.instructions,
-                //   RecipeDescription:recipePar.description
-                // })
-                // const savedrecipe= await recipeInst.save();
-      
-      
               }
               catch(err){
                 console.error(`Error fetching description for ${recipePar.recipeName}:`, err);

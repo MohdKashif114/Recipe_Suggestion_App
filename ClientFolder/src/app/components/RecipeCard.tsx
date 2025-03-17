@@ -1,15 +1,18 @@
+import { useState } from "react";
 import dummydata from "../../../public/dummy/dummydata"
 import Image from "next/image"
+import LikeButton from "./LikeButton";
 
 
-interface recipeprops{
-    recipeName: string;
-    imageUrl: string;
-    instructions: string;
-    description:string;
-}
+interface recipeprops {
+    RecipeId:number;
+    RecipeName: string;
+    ImageUrl: string;
+    RecipeInstruction: string;
+    RecipeDescription:string;
+  }
 
-export default function RecipeCard({recipeName,imageUrl,description,instructions}:recipeprops){
+export default function RecipeCard({RecipeId,RecipeName,ImageUrl,RecipeDescription,RecipeInstruction}:recipeprops){
 
 
     
@@ -17,11 +20,11 @@ export default function RecipeCard({recipeName,imageUrl,description,instructions
     return (
         <div className="flex flex-col justify-center items-center gap-4 p-2 ">
             <div>
-                <h1 className="text-lg" >{recipeName}</h1>
+                <h1 className="text-lg" >{RecipeName}</h1>
             </div>
             <div className="flex justify-center">
             <Image className=""
-                src={imageUrl}
+                src={ImageUrl}
                 alt="Picture of the author"
                 width={300}
                 height={200}
@@ -29,7 +32,10 @@ export default function RecipeCard({recipeName,imageUrl,description,instructions
             </div>
             
             <div>
-                <p>{(description.length)>60?(description.substring(0,60)):(description)}</p>
+                <p>{(RecipeDescription.length)>60?(RecipeDescription.substring(0,60)):(RecipeDescription)}</p>
+            </div>
+            <div>
+                <LikeButton RecipeId={RecipeId}/>
             </div>
         </div>
     )

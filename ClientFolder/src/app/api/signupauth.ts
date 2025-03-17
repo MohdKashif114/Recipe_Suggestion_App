@@ -21,11 +21,9 @@ const SignupFormSchema = z.object({
       message: 'Contain at least one special character.',
     })
     .trim(),
-    confirmpassword:z.string().trim()
+    confirmpassword:z.string().trim(),
+    username:z.string().trim()
   
-}).refine((data)=>data.password===data.confirmpassword,{
-    message:"The passwords dont match",
-    path:["confirm password"]
 });
  
  type FormState =
@@ -36,6 +34,7 @@ const SignupFormSchema = z.object({
         email?: string[]
         password?: string[]
         confirmpassword?: string[]
+        username?:string[]
       }
       message?: string
     }
@@ -44,30 +43,30 @@ const SignupFormSchema = z.object({
 export async function signupValidation(state: FormState, formData: FormData) {
   // Validate form fields
   console.log("Validating credentials....");
-  
-  await new Promise(resolve=>setTimeout(resolve,3000));
+  console.log(formData);
+  // await new Promise(resolve=>setTimeout(resolve,3000));
 
   const validatedFields = SignupFormSchema.safeParse({
     lastname:formData.get('lastname'),
     firstname: formData.get('firstname'),
     email: formData.get('email'),
     password: formData.get('password'),
-    confirmpassword:formData.get('confirmpassword')
+    confirmpassword:formData.get('confirmpassword'),
+    username:formData.get('username')
   })
- 
+  console.log("after validation...")
   // If any form fields are invalid, return early
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
     }
   }
-  else{
+  
     console.log("Credential verified on server....");
     console.log(formData);
-    return{
-        message:"Credentials verfied correctly..."
-    }
-  }
- 
+
   // Call the provider or db to create a user...
+  
+ 
+
 }
