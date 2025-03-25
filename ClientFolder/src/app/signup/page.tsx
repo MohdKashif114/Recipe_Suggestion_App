@@ -1,8 +1,9 @@
 'use client'
 import React from 'react'
 import { useState,useActionState } from 'react';
-import NavBar from '../components/NavBar';
-import { signupValidation } from '../api/signupauth';
+import NavBar from '../../components/NavBar';
+import { signupValidation } from '../../api/signupauth';
+import { authhook } from '@/authcontext/Authcontext';
 
 interface information{
     firstname:string,
@@ -15,7 +16,9 @@ interface information{
 
 
 
+
 const page = () => {
+    const auth=authhook();
 
      const [information,setInformation]=useState<information>({username:"",email:"",password:"",firstname:"",lastname:"",confirmpassword:""});
     //  const [data,formAction,isPending]=useActionState(signupValidation,undefined)
@@ -47,6 +50,7 @@ const page = () => {
                 const finalres=await res.json();
                 console.log(finalres);
                 console.log("signup is successfull")
+                auth.setUser(information.username)
                 setloading(false);
                 return{
                   ...finalres,

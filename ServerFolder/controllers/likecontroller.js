@@ -37,7 +37,22 @@ export const fetchlikecontroller=async (req,res)=>{
         console.log("cant fetch likes",err);
         res.status(400).json({success:false,message:"Can't fetch like"});
     }
-    
+}
 
+export const fetchlikedornotcontroller=async(req,res)=>{
+    const recipeid=req.query.recipeId;
+    if(!recipeid){
+        res.status(400).json({message:"RecipeId is required"})
+        console.log("recipeid required")
+    }
+    let username;
+    username=req.user.id;
+    try{
+        const found=await Interaction.findOne({RecipeId:recipeid,UserName:username,Like:true})
+        res.json({founded:found});
+    }catch(err){
+        res.json({founded:false})
+        console.log("cant fetch liked or not from the database",err)
+    }
 }
 

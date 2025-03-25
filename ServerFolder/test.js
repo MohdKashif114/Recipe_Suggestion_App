@@ -25,6 +25,7 @@ export async function getGroqChatCompletion(recipeName) {
     messages: [
       {
         role: "user",
+        // content: `Give me a mouth-watering description of ${recipeName} of atleast 50 words `,
         content: `Give me a mouth-watering description of ${recipeName} of atleast 50 words `,
       },
     ],

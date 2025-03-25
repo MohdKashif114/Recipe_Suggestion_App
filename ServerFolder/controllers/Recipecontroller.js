@@ -44,7 +44,7 @@ const schema = {
 
         const recipe_data=await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients.join(",+")}&ranking=1&apiKey=${process.env.SpoonApi_Key}`)
         const recipes=await recipe_data.json();
-        // console.log(recipes);
+        console.log(recipes);
         const finalformatfunc=(recipes)=>{
             return recipes.map((recipe)=>({
                     recipeId:recipe.id,

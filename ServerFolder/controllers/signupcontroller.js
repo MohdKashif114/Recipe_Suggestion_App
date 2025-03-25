@@ -10,7 +10,7 @@ dotenv.config();
 
 
 
-const signupcontroller=async (req,res)=>{
+export const signupcontroller=async (req,res)=>{
     const username=req.body.username;
     const password=req.body.password;
     const email=req.body.email;
@@ -51,7 +51,16 @@ const signupcontroller=async (req,res)=>{
 }
 
 
-export default signupcontroller
+
+export const authenticate=async(req,res)=>{
+    if(req.user){
+        return res.json({userid:req.user.id})
+    }
+    else{
+        return res.json({error:"cant find user"})
+    }
+
+}
 
 
 

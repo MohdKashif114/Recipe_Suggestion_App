@@ -6,18 +6,19 @@ import {generateRecipeId} from "./Utils/generateId.js"
 import Recipe from "./models/Recipe.js";
 import DBconnect from "./config/database.js";
 import recipecontroller from "./controllers/Recipecontroller.js";
-import signupcontroller from "./controllers/signupcontroller.js"
+import {signupcontroller} from "./controllers/signupcontroller.js"
 import userRoutes from "./Routes/userRoutes.js"
 import cookieParser from "cookie-parser";
 import {likecontroller,fetchlikecontroller} from "./controllers/likecontroller.js";
 import auth from "./middlewares/auth.js"
+import { loggoutcontroller } from "./controllers/logincontroller.js";
+import { fetchcommentcontroller } from "./controllers/commentcontroller.js";
 dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: "http://localhost:3005",  // ✅ Replace '*' with your frontend URL
-    credentials: true , // ✅ This allows cookies & authentication headers
-    // exposedHeaders: ["Set-Cookie"]
+    origin: true,  
+    credentials: true , 
 }));
 app.use(cookieParser());
 app.use(express.json());
@@ -38,6 +39,10 @@ app.use("/auth",userRoutes)
 app.post("/generate-recipe",recipecontroller);
 app.post("/liked",auth,likecontroller);
 app.post("/likes",fetchlikecontroller);
+app.get("/loggout",loggoutcontroller);
+app.get("/comments",fetchcommentcontroller);
+
+
 
 
 
