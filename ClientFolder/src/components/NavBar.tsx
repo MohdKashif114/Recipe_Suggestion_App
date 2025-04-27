@@ -19,12 +19,12 @@ const NavBar = () => {
     }
   }
   return (
-    <div className='w-full h-20 flex bg-[#3E7B27] justify-around'>
-        <div className='flex justify-around gap-3'>
-            <Link href="/">About</Link>
+    <div className='w-full h-20 flex bg-[#3E7B27] justify-between items-center'>
+        <div className='flex justify-center gap-6 w-1/4'>
             <Link href="/">Home</Link>
+            <Link href="/recipes">Recipes</Link>
         </div>
-        <div className='flex justify-around gap-3'>
+        <div className='flex justify-center gap-3 w-1/4'>
           {!auth.user?(
             <>
               <Link href="/login">Login</Link>

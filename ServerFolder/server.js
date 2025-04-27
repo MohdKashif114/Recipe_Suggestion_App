@@ -13,6 +13,7 @@ import {likecontroller,fetchlikecontroller} from "./controllers/likecontroller.j
 import auth from "./middlewares/auth.js"
 import { loggoutcontroller } from "./controllers/logincontroller.js";
 import { fetchcommentcontroller } from "./controllers/commentcontroller.js";
+import { fetchinstructions } from "./controllers/instructionscontroller.js";
 dotenv.config();
 
 const app = express();
@@ -41,6 +42,7 @@ app.post("/liked",auth,likecontroller);
 app.post("/likes",fetchlikecontroller);
 app.get("/loggout",loggoutcontroller);
 app.get("/comments",fetchcommentcontroller);
+app.get("/instructions",fetchinstructions);
 
 
 

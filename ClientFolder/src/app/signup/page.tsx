@@ -1,151 +1,147 @@
 'use client'
-import React from 'react'
-import { useState,useActionState } from 'react';
+import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
-import { signupValidation } from '../../api/signupauth';
 import { authhook } from '@/authcontext/Authcontext';
 
-interface information{
-    firstname:string,
-    lastname:string,
-    email:string,
-    password:string,
-    confirmpassword:string,
-    username:string
+interface information {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    confirmpassword: string;
+    username: string;
 }
 
+const Page = () => {
+    const auth = authhook();
+    const [information, setInformation] = useState<information>({
+        username: "",
+        email: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+        confirmpassword: ""
+    });
+    const [loading, setLoading] = useState<boolean>(false);
 
+    const handleInformation = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInformation(prev => ({
+            ...prev,
+            [event.target.name]: event.target.value
+        }));
+    }
 
+    const signupHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:6500/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: information.username,
+                    password: information.password,
+                    email: information.email
+                }),
+                credentials: "include"
+            });
 
-const page = () => {
-    const auth=authhook();
-
-     const [information,setInformation]=useState<information>({username:"",email:"",password:"",firstname:"",lastname:"",confirmpassword:""});
-    //  const [data,formAction,isPending]=useActionState(signupValidation,undefined)
-    const [loading,setloading]=useState<boolean>(false);
-
-
-        const handleinformation=(event:React.ChangeEvent<HTMLInputElement>)=>{
-            setInformation((prev)=>({
-                ...prev,
-                [event.target.name]:event.target.value
-            }))
-            console.log(information);
+            const finalres = await res.json();
+            console.log(finalres);
+            console.log("Signup is successful");
+            auth.setUser(information.username);
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            console.log("some error occurred", err);
         }
+    }
 
-
-        const signuphandler=async(event:React.FormEvent<HTMLFormElement>)=>{
-            event.preventDefault();
-            setloading(true);
-            try{
-                const res=await fetch("http://localhost:6500/auth/signup",{
-                  method:"POST",
-                  headers:{
-                    "Content-Type":"application/json"
-                  },
-                  body:JSON.stringify({username:information.username,password:information.password,email:information.email}),
-                  credentials:"include"
-                })
-            
-                const finalres=await res.json();
-                console.log(finalres);
-                console.log("signup is successfull")
-                auth.setUser(information.username)
-                setloading(false);
-                return{
-                  ...finalres,
-                  message:"Signup successfull"
-                }
-            
-            
-              }catch(err){
-                setloading(false);
-                console.log("some err occurred",err)
-                return {message:"some err occurred"}
-              }
-        }
-
-
-    
-
-
-  return (
-    <div>
-        <NavBar/>
-            <form onSubmit={signuphandler} className='flex flex-col gap-4 items-center justify-center'>
-            <h1>Ello!! This is a Signup page</h1>
-                <div className=''>
-                    <div>
-                        <label>First Name</label>
+    return (
+        <div className="min-h-screen bg-[#EFE3C2]">
+            <NavBar />
+            <div className="flex flex-col items-center justify-center p-8">
+                <form onSubmit={signupHandler} className="bg-[#f1e3ba] p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-4">
+                    <h1 className="text-2xl font-bold text-center text-[#123524]">Sign Up</h1>
+                    
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[#123524]">First Name</label>
                         <input
-                        placeholder='First Name'
-                        id="firstname"
-                        name="firstname"
-                        value={information.firstname}
-                        onChange={(e)=>handleinformation(e)}
-                    ></input>
-                        <label>Last Name</label>
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="First Name"
+                            id="firstname"
+                            name="firstname"
+                            value={information.firstname}
+                            onChange={handleInformation}
+                        />
+                        
+                        <label className="text-[#123524]">Last Name</label>
                         <input
-                        placeholder='Last Name'
-                        id="lastname"
-                        name="lastname"
-                        value={information.lastname}
-                        onChange={(e)=>handleinformation(e)}
-                    ></input>
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Last Name"
+                            id="lastname"
+                            name="lastname"
+                            value={information.lastname}
+                            onChange={handleInformation}
+                        />
+                        
+                        <label className="text-[#123524]">Email</label>
+                        <input
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Enter your email"
+                            id="email"
+                            name="email"
+                            value={information.email}
+                            onChange={handleInformation}
+                        />
+                        
+                        <label className="text-[#123524]">Username</label>
+                        <input
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Enter your username"
+                            id="username"
+                            name="username"
+                            value={information.username}
+                            onChange={handleInformation}
+                        />
                     </div>
-                    <label>Enter Email:</label>
-                    <input
-                        placeholder='Enter your email'
-                        id="email"
-                        name="email"
-                        value={information.email}
-                        onChange={(e)=>handleinformation(e)}
-                    ></input>
-                    <label>Username:</label>
-                    <input
-                        placeholder='Enter your username'
-                        id="username"
-                        name="username"
-                        value={information.username}
-                        onChange={(e)=>handleinformation(e)}
-                    ></input>
-                </div>
-                <div className='flex flex-col justify-center'>
-                    <div>
-                        <label>Enter Password:</label>
+
+                    <div className="flex flex-col gap-2 mt-4">
+                        <label className="text-[#123524]">Password</label>
                         <input
                             type="password"
-                            placeholder='Enter your password'
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Enter your password"
                             id="password"
                             name="password"
                             value={information.password}
-                            onChange={(e)=>handleinformation(e)}
-                        ></input>
-                    </div>
-                    <div>
-                        <label>Confirm Password</label>
+                            onChange={handleInformation}
+                        />
                         
+                        <label className="text-[#123524]">Confirm Password</label>
                         <input
-                            placeholder='Confirm password'
+                            type="password"
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Confirm password"
                             id="confirmpassword"
                             name="confirmpassword"
                             value={information.confirmpassword}
-                            onChange={(e)=>handleinformation(e)}
-                        ></input>
+                            onChange={handleInformation}
+                        />
                     </div>
-                        
-                </div>
-                <button>Submit</button>
-            </form>
-            <div>
-                {loading && <p>loading...</p>}
-                {/* {isPending && (<p>submitting....</p>)}
-                {data?.message && (<p className='bg-green-400'>{data.message}</p>)}
-                {data?.errors && (<p className='bg-red-500'>{data.errors.password}</p>)} */}
+
+                    <button
+                        type="submit"
+                        className="bg-[#3E7B27] text-white p-2 rounded hover:bg-[#2e5d1c] transition-all mt-4"
+                    >
+                        {loading ? 'Loading...' : 'Submit'}
+                    </button>
+                </form>
             </div>
-            
-    </div>
-  )
+        </div>
+    );
 }
 
-export default page
+export default Page;

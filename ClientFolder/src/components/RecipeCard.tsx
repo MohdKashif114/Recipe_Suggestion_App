@@ -2,6 +2,8 @@ import { useState } from "react";
 import dummydata from "../../public/dummy/dummydata"
 import Image from "next/image"
 import LikeButton from "./LikeButton";
+import { useRouter } from "next/navigation";
+
 
 
 interface recipeprops {
@@ -13,18 +15,20 @@ interface recipeprops {
   }
 
 export default function RecipeCard({RecipeId,RecipeName,ImageUrl,RecipeDescription,RecipeInstruction}:recipeprops){
-
-
+    const router=useRouter();
+    const navigationhandler=()=>{
+        router.push(`/recipeinfo/${RecipeId}`)
+    }
     
 
     return (
-        <div className="flex flex-col justify-around items-center gap-4 p-4 rounded-md bg-[#f1e3ba] text-[#123524] border-2">
+        <div  className="flex flex-col justify-around items-center gap-4 p-4 rounded-md bg-[#f1e3ba] text-[#123524] border-2">
             <div>
-                <h1 className="text-lg h-12  text-center font-extrabold" >{RecipeName}</h1>
+                <h1 onClick={navigationhandler} className="text-lg h-12  text-center font-extrabold" >{RecipeName}</h1>
             </div>
             <div className="">
 
-            <Image className="rounded-md"
+            <Image className="rounded-md" onClick={navigationhandler}
                 src={ImageUrl || 'https://img.spoonacular.com/recipes/665188-312x231.jpg'}
                 alt="Picture of the author"
                 width={300}

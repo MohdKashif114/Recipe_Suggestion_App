@@ -102,6 +102,7 @@ const schema = {
                   return{
                     ...recipePar,
                     description:recipeDesNIns.description,
+                    Like:0
                   }
               }
               catch(err){
@@ -109,6 +110,7 @@ const schema = {
                 return{
                     ...recipePar,
                     description: await happyfacetext(name),
+                    Like:0
                   }
               }
               return recipePar;

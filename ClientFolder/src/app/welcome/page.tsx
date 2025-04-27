@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import NavBar from '@/components/NavBar';
+import NavBar from '../../components/NavBar';
 
 const WelcomePage = () => {
   const router = useRouter();

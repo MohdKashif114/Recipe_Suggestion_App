@@ -5,7 +5,21 @@ import {authhook} from "../authcontext/Authcontext"
 import {useRouter} from 'next/navigation';
 import Router from "next/navigation"
 
-function LikeButton({RecipeId}:any) {
+
+
+interface post {
+    RecipeId:number;
+    RecipeName: string;
+    ImageUrl: string;
+    RecipeInstruction: string;
+    RecipeDescription:string;
+    Like:number;
+  }
+  interface posts {
+    recipes:post[];
+  }
+
+function LikeButton({RecipeId}:{RecipeId:number}) {
 
     const router=useRouter();
     const [like,setLike]=useState<Number>(0);
@@ -24,6 +38,23 @@ const fetchlike=async ()=>{
         })
         const count=await res.json();
         setLike(count.likes);
+        auth.setPosts((prev:posts) => {
+            if (!prev) return prev; 
+            return {
+              ...prev,
+              recipes: prev.recipes.map((recipe) => {
+
+                  console.log(count.likes)
+                  return recipe.RecipeId === RecipeId 
+                    ? { ...recipe, Like: count.likes } 
+                    : recipe
+              }
+              ),
+            };
+          });
+          
+
+        
     }catch(err){
         console.log("Error fetching recipes")
     }

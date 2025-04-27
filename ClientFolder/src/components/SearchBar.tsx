@@ -1,40 +1,39 @@
+import { authhook } from "@/authcontext/Authcontext";
 import { useState } from "react"
 
 
 
-export default function SearchBar({setIng,setloading}:{setIng:React.Dispatch<React.SetStateAction<string[]>>;
-                                                        setloading:React.Dispatch<React.SetStateAction<boolean>>}){
-
-    const[ingredients,setIngredients]=useState<string[]>([]);
-    const[inputval,setInputval]=useState<string>("");
+export default function SearchBar(){
+    
+    const auth=authhook();
 
 
 
     const putinbasket=(event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>,ingredient:string):void=>{
         event.preventDefault();
-        if(!ingredients.includes(ingredient)){
-            setIngredients([...ingredients,ingredient]);
+        if(!auth.cbingredients.includes(ingredient)){
+            auth.setcbIngredients([...auth.cbingredients,ingredient]);
         }
-        setInputval("");
-        console.log(ingredients);
+        auth.setInputval("");
+        console.log(auth.cbingredients);
     }
 
     const handlekeydown=(event:React.KeyboardEvent<HTMLInputElement>)=>{
         if(event.key==="Enter"){
-            putinbasket(event,inputval);
+            putinbasket(event,auth.inputval);
         }
     }
 
     const handlecheckbox=(ingredient:string)=>{
-        const filteredIng=ingredients.filter((el)=>el!=ingredient);
-        setIngredients(filteredIng);
+        const filteredIng=auth.cbingredients.filter((el)=>el!=ingredient);
+        auth.setcbIngredients(filteredIng);
         // console.log(ingredients);
     }
 
     const handleRecipe=()=>{
-        setIng([...ingredients]);
-        console.log("set ingredients in handlerecipe",ingredients)
-        setloading(true)
+        auth.setIng([...auth.cbingredients]);
+        console.log("set ingredients in handlerecipe",auth.cbingredients)
+        auth.setloading(true)
     }
 
     return(
@@ -47,21 +46,21 @@ export default function SearchBar({setIng,setloading}:{setIng:React.Dispatch<Rea
                     type="text"
                     id="ingredient"
                     placeholder="Whats in your fridge"
-                    value={inputval}
-                    onChange={(e)=>setInputval(e.target.value)}
+                    value={auth.inputval}
+                    onChange={(e)=>auth.setInputval(e.target.value)}
                     onKeyDown={handlekeydown}    
                 >
                 </input>
                 <button className="bg-[#3E7B27] h-10 rounded-l-none rounded-sm text-sm leading-none"
-                  onClick={(event)=>putinbasket(event,inputval)}  >Add to basket</button>
+                  onClick={(event)=>putinbasket(event,auth.inputval)}  >Add to basket</button>
 
                 </div>
                 <div className="flex gap-2 flex-row " >
                     {
-                        ingredients.map((ingredient,key)=>(
+                        auth.cbingredients.map((ingredient,key)=>(
                             <label key={key} className="p-1  border-2 rounded-md ">
                                 <input type="checkbox" className="w-4 m-1 "
-                                    checked={ingredients.includes(ingredient)} 
+                                    checked={auth.cbingredients.includes(ingredient)} 
                                     onChange={()=>handlecheckbox(ingredient)}></input>
                                 {ingredient}
                             </label>

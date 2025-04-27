@@ -1,103 +1,94 @@
 'use client'
-import React from 'react'
-import { useState,useActionState } from 'react'
-import NavBar from '../../components/NavBar'
-import { loginValidation } from '../../api/loginauth'
-import { authhook } from '@/authcontext/Authcontext'
+import React, { useState } from 'react';
+import NavBar from '../../components/NavBar';
+import { authhook } from '@/authcontext/Authcontext';
 
-interface information{
-    email:string ,
-    password:string
+interface information {
+    email: string;
+    password: string;
 }
 
+const Page = () => {
+    const auth = authhook();
+    const [information, setInformation] = useState<information>({ email: "", password: "" });
+    const [loading, setLoading] = useState<boolean>(false);
 
-const page = () => {
-    const auth=authhook();
-    const [information,setInformation]=useState<information>({email:"",password:""});
-    const [loading,setloading]=useState<boolean>(false);
-
-    const handleinformation=(event:React.ChangeEvent<HTMLInputElement>)=>{
-        setInformation((prev)=>({
+    const handleInformation = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInformation(prev => ({
             ...prev,
-            [event.target.name]:event.target.value
-        }))
-        console.log(information);
+            [event.target.name]: event.target.value
+        }));
     }
 
+    const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:6500/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    password: information.password,
+                    username: information.email
+                }),
+                credentials: "include"
+            });
 
+            const finalRes = await res.json();
+            console.log(finalRes);
+            console.log("Login is successful");
+            auth.setUser(information.email);
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            console.log("some error occurred while logging in", err);
+        }
+    }
 
-     const loginhandler=async(event:React.FormEvent<HTMLFormElement>)=>{
-                event.preventDefault();
-                setloading(true);
-                try{
-                    const res=await fetch("http://localhost:6500/auth/login",{
-                      method:"POST",
-                      headers:{
-                        "Content-Type":"application/json"
-                      },
-                      body:JSON.stringify({password:information.password,username:information.email}),
-                      credentials:"include"
-                    })
-                
-                    const finalres=await res.json();
-                    console.log(finalres);
-                    console.log("login is successfull")
-                    auth.setUser(information.email)
-                    setloading(false);
-                    return{
-                      ...finalres,
-                      message:"login successfull"
-                    }
-                
-                
-                  }catch(err){
-                    setloading(false);
-                    console.log("some err occurred while logging in",err)
-                    return {message:"some err occurred"}
-                  }
-            }
-   
+    return (
+        <div className="min-h-screen bg-[#EFE3C2]">
+            <NavBar />
+            <div className="flex flex-col items-center justify-center p-8">
+                <form onSubmit={loginHandler} className="bg-[#f1e3ba] p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col gap-4">
+                    <h1 className="text-2xl font-bold text-center text-[#123524]">Login</h1>
 
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[#123524]">Email / Username</label>
+                        <input
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Enter your email"
+                            id="email"
+                            name="email"
+                            value={information.email}
+                            onChange={handleInformation}
+                        />
+                    </div>
 
-  return (
-    <div>
-        <NavBar/>
-        <form onSubmit={loginhandler} className='flex flex-col gap-4 items-center'>
-        <h1>Ello!! This is a login page</h1>
-            <div className=''>
-                <label>Enter Username:</label>
-                <input
-                    placeholder='Enter your email'
-                    id="email"
-                    name="email"
-                    value={information.email}
-                    onChange={(e)=>handleinformation(e)}
-                ></input>
+                    <div className="flex flex-col gap-2">
+                        <label className="text-[#123524]">Password</label>
+                        <input
+                            type="password"
+                            className="p-2 rounded border focus:outline-none focus:ring-2 focus:ring-[#3E7B27]"
+                            placeholder="Enter your password"
+                            id="password"
+                            name="password"
+                            value={information.password}
+                            onChange={handleInformation}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="bg-[#3E7B27] text-white p-2 rounded hover:bg-[#2e5d1c] transition-all mt-4"
+                    >
+                        {loading ? 'Loading...' : 'Submit'}
+                    </button>
+                </form>
             </div>
-            <div>
-                <label>Enter Password:</label>
-                <input
-                    placeholder='Enter your password'
-                    id="password"
-                    name="password"
-                    value={information.password}
-                    onChange={(e)=>handleinformation(e)}
-                ></input>
-            </div>
-            <button>Submit</button>
-        </form>
-        <div>
-            {loading?(<p>loading...</p>):(
-                <>
-                {/* {data?.errors && <p className='text-red-600'>{data.errors.email}</p>}
-                {data?.message && <p className='text-green-600'>{data.message}</p>} */}
-                </>)
-            }
-            
         </div>
-        
-    </div>
-  )
+    );
 }
 
-export default page
+export default Page;
