@@ -11,7 +11,7 @@ const NavBar = () => {
   const auth=authhook();
   const loggouthandler=async()=>{
     try{
-      const res=await fetch("http://localhost:6500/loggout",{method:"GET",headers:{"Content-Type":"application/json"},credentials:"include"});
+      const res=await fetch("https://recipe-suggestion-app-vtq8.onrender.com/loggout",{method:"GET",headers:{"Content-Type":"application/json"},credentials:"include"});
       auth.setUser(null);
   
     }catch(err){

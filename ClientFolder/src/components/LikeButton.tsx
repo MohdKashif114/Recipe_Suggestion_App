@@ -25,7 +25,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
 
   const fetchlike = async () => {
     try {
-      const res = await fetch('http://localhost:6500/likes', {
+      const res = await fetch('https://recipe-suggestion-app-vtq8.onrender.com/likes', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
 
   const fetchlikedornot = async () => {
     try {
-      const res = await fetch(`http://localhost:6500/auth/likedornot?recipeId=${RecipeId}`, {
+      const res = await fetch(`https://recipe-suggestion-app-vtq8.onrender.com/auth/likedornot?recipeId=${RecipeId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include"
@@ -77,7 +77,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
       router.push("/login");
     }
     try {
-      const res = await fetch('http://localhost:6500/liked', {
+      const res = await fetch('https://recipe-suggestion-app-vtq8.onrender.com/liked', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

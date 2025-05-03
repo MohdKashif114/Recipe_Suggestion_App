@@ -37,7 +37,7 @@ export default function Page() {
       const ingredientsString = auth.ingredients.join(',');
       console.log(dish.RecipeName);
       setloadinginstructions(true);
-      const res = await fetch(`http://localhost:6500/instructions?name=${dish.RecipeName}&id=${dish.RecipeId}`, {
+      const res = await fetch(`https://recipe-suggestion-app-vtq8.onrender.com/instructions?name=${dish.RecipeName}&id=${dish.RecipeId}`, {
         method: "GET",
         credentials: "include",
       });

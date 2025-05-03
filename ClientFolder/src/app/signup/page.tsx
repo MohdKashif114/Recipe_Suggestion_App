@@ -36,7 +36,7 @@ const Page = () => {
         setLoading(true);
         console.log(information);
         try {
-            const res = await fetch("http://localhost:6500/auth/signup", {
+            const res = await fetch("https://recipe-suggestion-app-vtq8.onrender.com/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

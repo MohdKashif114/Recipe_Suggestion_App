@@ -24,7 +24,7 @@ const Page = () => {
         event.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:6500/auth/login", {
+            const res = await fetch("https://recipe-suggestion-app-vtq8.onrender.com/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -39,7 +39,7 @@ const Page = () => {
             const finalRes = await res.json();
             console.log(finalRes);
             console.log("Login is successful");
-            auth.setUser(information.email);
+            if(finalRes.success) auth.setUser(information.email);
             setLoading(false);
         } catch (err) {
             setLoading(false);

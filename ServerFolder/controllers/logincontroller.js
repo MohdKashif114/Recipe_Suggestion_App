@@ -27,7 +27,13 @@ export const logincontroller=async (req,res)=>{
         }
         const token=jwt.sign({id:saveduser.UserName},process.env.JWT_SECRET,{expiresIn:"10hr"})
         console.log(token);
-        res.cookie("token",token,{httpOnly:true,maxAge:10*60*60*1000})
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,         
+            sameSite: "None",     
+            maxAge: 10 * 60 * 60 * 1000,
+          });
+          
         res.status(200).json({success:true,message:"Logged in successfully"})
         console.log("password right")
     }catch(err){

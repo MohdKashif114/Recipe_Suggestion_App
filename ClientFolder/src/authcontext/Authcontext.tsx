@@ -45,7 +45,7 @@ export default function Authcontext({children}:{children:ReactNode}){
   const [ingredients,setIng]=useState<string[]> (["cheese","Egg","chocolate"])
   async function fetchRecipes() {
     try {
-        const res = await fetch('http://localhost:6500/generate-recipe', {
+        const res = await fetch('https://recipe-suggestion-app-vtq8.onrender.com/generate-recipe', {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default function Authcontext({children}:{children:ReactNode}){
     const [user,setUser]=useState<null>(null);
     const fetchauthentication=async ()=>{
         try{
-            const res=await fetch("http://localhost:6500/auth/authenticate",{method:"GET",credentials:"include"})
+            const res=await fetch("https://recipe-suggestion-app-vtq8.onrender.com/auth/authenticate",{method:"GET",credentials:"include"})
             const result=await res.json()
             if(result){
                 setUser(result.userid)
