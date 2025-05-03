@@ -34,6 +34,7 @@ const Page = () => {
     const signupHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
+        console.log(information);
         try {
             const res = await fetch("http://localhost:6500/auth/signup", {
                 method: "POST",
@@ -51,7 +52,9 @@ const Page = () => {
             const finalres = await res.json();
             console.log(finalres);
             console.log("Signup is successful");
-            auth.setUser(information.username);
+            if(finalres.success==true){
+                auth.setUser(information.username);
+            }
             setLoading(false);
         } catch (err) {
             setLoading(false);

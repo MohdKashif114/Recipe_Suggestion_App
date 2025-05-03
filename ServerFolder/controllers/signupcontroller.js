@@ -15,15 +15,16 @@ export const signupcontroller=async (req,res)=>{
     const password=req.body.password;
     const email=req.body.email;
     console.log(username);
+    console.log(email);
     try{
-        const finduser=await User.findOne({UserName:username})
-        if(finduser){
-            console.log("user already signed up")
-            return res.status(400).json({
-                success:false,
-                message:"user already exists"
-            })
+        const finduser = await User.findOne({ $or: [{ UserName: username }, { Email: email }] });
+        if (finduser) {
+        return res.status(400).json({
+            success: false,
+            message: "User with this username or email already exists"
+        });
         }
+
         const saltRounds=10;
         let hashedpw;
         try{
