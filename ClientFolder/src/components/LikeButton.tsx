@@ -34,7 +34,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
       })
       const count = await res.json();
       setLike(count.likes);
-      auth.setPosts((prev: posts) => {
+      auth.setPosts((prev: posts | null) => {
         if (!prev) return prev;
         return {
           ...prev,

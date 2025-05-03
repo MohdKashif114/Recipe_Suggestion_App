@@ -14,24 +14,23 @@ interface post {
 interface posts {
   recipes:post[];
 }
-interface AuthContextype{
-    user: null;
-    setUser:Dispatch<SetStateAction<any>>;
-    posts:posts | null;
-    setPosts:Dispatch<SetStateAction<any>>;
-    ingredients:string[];
-    setIng:Dispatch<SetStateAction<any>>;
-    loading:boolean;
-    setloading:Dispatch<SetStateAction<any>>;
-    inputval:string;
-    setInputval:Dispatch<SetStateAction<any>>;
-    cbingredients:string[];
-    setcbIngredients:Dispatch<SetStateAction<any>>;
-
+interface AuthContextType {
+  user: string | null; 
+  setUser: Dispatch<SetStateAction<string | null>>;
+  posts: posts | null;
+  setPosts: Dispatch<SetStateAction<posts | null>>;
+  ingredients: string[];
+  setIng: Dispatch<SetStateAction<string[]>>;
+  loading: boolean;
+  setloading: Dispatch<SetStateAction<boolean>>;
+  inputval: string;
+  setInputval: Dispatch<SetStateAction<string>>;
+  cbingredients: string[];
+  setcbIngredients: Dispatch<SetStateAction<string[]>>;
 }
 
 
-export const AuthProvider=createContext<AuthContextype | null>(null);
+export const AuthProvider=createContext<AuthContextType | null>(null);
 
 
 
@@ -42,6 +41,7 @@ export default function Authcontext({children}:{children:ReactNode}){
     const [loading,setloading]=useState<boolean>(false);
   const [posts, setPosts] = useState<posts | null> (null);
   const [ingredients,setIng]=useState<string[]> (["cheese","Egg","chocolate"])
+  const [user,setUser]=useState<string | null>(null);
   async function fetchRecipes() {
     try {
         const res = await fetch('https://recipe-suggestion-app-vtq8.onrender.com/generate-recipe', {
@@ -68,7 +68,6 @@ export default function Authcontext({children}:{children:ReactNode}){
   }, [ingredients])
  
     
-    const [user,setUser]=useState<null>(null);
     const fetchauthentication=async ()=>{
         try{
             const res=await fetch("https://recipe-suggestion-app-vtq8.onrender.com/auth/authenticate",{method:"GET",credentials:"include"})
