@@ -1,6 +1,6 @@
 'use client';
 
-import { authhook } from '@/authcontext/Authcontext';
+import { useAuth } from '@/authcontext/Authcontext';
 import NavBar from '@/components/NavBar';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ interface recipeprops {
 
 export default function Page() {
   const params = useParams();
-  const auth = authhook();
+  const auth = useAuth();
   const id = params?.id;
 
   const [dish, setDish] = useState<recipeprops | undefined>(undefined);
@@ -34,7 +34,7 @@ export default function Page() {
   const instructionshandler = async () => {
     if (!dish) return;
     try {
-      const ingredientsString = auth.ingredients.join(',');
+      
       console.log(dish.RecipeName);
       setloadinginstructions(true);
       const res = await fetch(`https://recipe-suggestion-app-vtq8.onrender.com/instructions?name=${dish.RecipeName}&id=${dish.RecipeId}`, {

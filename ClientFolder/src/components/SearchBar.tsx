@@ -1,8 +1,8 @@
-import { authhook } from "@/authcontext/Authcontext";
-import { useState } from "react";
+import { useAuth } from "@/authcontext/Authcontext";
+
 
 export default function SearchBar() {
-  const auth = authhook();
+  const auth = useAuth();
 
   const putinbasket = (
     event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>,
@@ -33,12 +33,7 @@ export default function SearchBar() {
     auth.setloading(true);
   };
 
-  const handleRefresh = () => {
-    // You can add any refresh logic here. For now, it resets the input and ingredients.
-    auth.setInputval("");
-    auth.setcbIngredients([]);
-    console.log("Ingredients cleared and input reset");
-  };
+ 
 
   return (
     <div className="py-6 w-xl gap-2 flex justify-around flex-col">

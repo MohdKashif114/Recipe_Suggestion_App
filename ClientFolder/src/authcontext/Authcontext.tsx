@@ -1,7 +1,6 @@
 "use client"
 import {useState,createContext,useEffect,Dispatch,SetStateAction,ReactNode, useContext} from "react"
-import { boolean, set } from "zod";
-import dummydata from "../../public/dummy/dummydata";
+
 
 
 interface post {
@@ -50,7 +49,7 @@ export default function Authcontext({children}:{children:ReactNode}){
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ingredients }), // Send array in body
+          body: JSON.stringify({ ingredients }), 
         });
         
         const data: posts = await res.json();
@@ -102,7 +101,7 @@ export default function Authcontext({children}:{children:ReactNode}){
 
 
 
-export const authhook=()=>{
+export const useAuth=()=>{
     const context=useContext(AuthProvider)
     if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
-import { authhook } from "../authcontext/Authcontext"
+import { useAuth } from "../authcontext/Authcontext"
 import { HeartIcon, HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline'
 
 interface post {
@@ -19,8 +19,8 @@ interface posts {
 
 function LikeButton({ RecipeId }: { RecipeId: number }) {
   const router = useRouter();
-  const [like, setLike] = useState<Number>(0);
-  const auth = authhook();
+  const [like, setLike] = useState<number>(0);
+  const auth = useAuth();
   const [liked, setLiked] = useState<boolean>(false);
 
   const fetchlike = async () => {
@@ -46,7 +46,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
         };
       });
     } catch (err) {
-      console.log("Error fetching recipes");
+      console.log("Error fetching recipes",err);
     }
   }
 
@@ -85,6 +85,7 @@ function LikeButton({ RecipeId }: { RecipeId: number }) {
         body: JSON.stringify({ recipeId: RecipeId }),
         credentials: "include"
       })
+      console.log(res.json());
       setLiked(true);
       fetchlike();
     } catch (err) {

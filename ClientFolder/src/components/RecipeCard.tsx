@@ -16,7 +16,7 @@ export default function RecipeCard({
   RecipeName,
   ImageUrl,
   RecipeDescription,
-  RecipeInstruction,
+  
 }: recipeprops) {
   const router = useRouter();
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
@@ -25,9 +25,7 @@ export default function RecipeCard({
     router.push(`/recipeinfo/${RecipeId}`);
   };
 
-  const handleReadMore = () => {
-    setDescriptionExpanded(true);
-  };
+  
 
   return (
     <div className="flex flex-col justify-around items-center gap-4 p-4 rounded-md bg-[#f1e3ba] text-[#123524] border-2">

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Link from 'next/link'
-import { authhook } from '@/authcontext/Authcontext'
+import { useAuth } from '@/authcontext/Authcontext'
 
 
 
@@ -8,10 +8,11 @@ import { authhook } from '@/authcontext/Authcontext'
 
 
 const NavBar = () => {
-  const auth=authhook();
+  const auth=useAuth();
   const loggouthandler=async()=>{
     try{
       const res=await fetch("https://recipe-suggestion-app-vtq8.onrender.com/loggout",{method:"GET",headers:{"Content-Type":"application/json"},credentials:"include"});
+      console.log(res.json());
       auth.setUser(null);
   
     }catch(err){

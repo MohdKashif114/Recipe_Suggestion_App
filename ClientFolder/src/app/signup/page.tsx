@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
-import { authhook } from '@/authcontext/Authcontext';
+import { useAuth } from '@/authcontext/Authcontext';
 
 interface information {
     firstname: string;
@@ -13,7 +13,7 @@ interface information {
 }
 
 const Page = () => {
-    const auth = authhook();
+    const auth = useAuth();
     const [information, setInformation] = useState<information>({
         username: "",
         email: "",
