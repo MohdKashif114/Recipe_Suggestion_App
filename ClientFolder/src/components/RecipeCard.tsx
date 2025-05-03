@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import Image from "next/image";
 import LikeButton from "./LikeButton";
 import { useRouter } from "next/navigation";
@@ -64,7 +64,7 @@ export default function RecipeCard({
       
         <button
           onClick={navigationhandler}
-          className="text-blue-500 font-semibold mt-2 cursor-pointer"
+          className="text-[#07904e] font-semibold mt-2 cursor-pointer"
         >
           Know More
         </button>
