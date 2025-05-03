@@ -19,7 +19,7 @@ export default function RecipeCard({
   
 }: recipeprops) {
   const router = useRouter();
-  const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
+//   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false);
 
   const navigationhandler = () => {
     router.push(`/recipeinfo/${RecipeId}`);
@@ -53,23 +53,22 @@ export default function RecipeCard({
 
       <div>
         <p>
-          {isDescriptionExpanded
-            ? RecipeDescription
-            : RecipeDescription?.length > 120
+          {
+            RecipeDescription?.length > 120
             ? `${RecipeDescription.substring(0, 120)}...`
             : RecipeDescription}
         </p>
       </div>
 
       {/* Read more link */}
-      {RecipeDescription?.length > 120 && !isDescriptionExpanded && (
+      
         <button
           onClick={navigationhandler}
           className="text-blue-500 font-semibold mt-2 cursor-pointer"
         >
           Know More
         </button>
-      )}
+      
 
       <div>
         <LikeButton RecipeId={RecipeId} />
