@@ -43,12 +43,16 @@ export const logincontroller=async (req,res)=>{
 
 
 
-export const loggoutcontroller=(req,res)=>{
-    try{
-        res.clearCookie("token",{httpOnly:true,secure: false,sameSite: "lax"})
-        res.status(200).json({message:"User logged out"})
-    }catch(err){
-        console.log("error while deleting",err);
+export const loggoutcontroller = (req, res) => {
+    try {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      });
+      return res.status(200).json({ success: true, message: "User logged out" });
+    } catch (err) {
+      console.error("Logout error:", err);
+      return res.status(500).json({ success: false, message: "Server error during logout" });
     }
-    
-}
+  };
