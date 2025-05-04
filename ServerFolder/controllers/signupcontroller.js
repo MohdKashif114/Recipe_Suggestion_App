@@ -42,7 +42,12 @@ export const signupcontroller=async (req,res)=>{
         console.log("creating jwt");
         const token=jwt.sign({id:username},process.env.JWT_SECRET,{expiresIn:"1h"});
         console.log("creatie cookie")
-        res.cookie("token",token,{maxAge:1*60*60*1000,httpOnly:true,secure: false,sameSite: "lax"});
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,         
+            sameSite: "None",     
+            maxAge: 10 * 60 * 60 * 1000,
+          });
         console.log("Set-Cookie:", res.getHeaders()["set-cookie"]); 
         res.status(200).json({success:true,message:"Cookie created succesfully"})
 
