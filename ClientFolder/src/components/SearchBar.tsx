@@ -1,5 +1,5 @@
 import { useAuth } from "@/authcontext/Authcontext";
-
+import { MdOutlineRefresh } from "react-icons/md";
 
 export default function SearchBar() {
   const auth = useAuth();
@@ -33,13 +33,11 @@ export default function SearchBar() {
     auth.setloading(true);
   };
 
- 
-
   return (
-    <div className="py-6 w-xl gap-2 flex justify-around flex-col">
+    <div className="py-6 w-1/2 sm:w-xl gap-2 flex justify-around flex-col">
       <div className="flex justify-around flex-row items-center border-2 rounded-md">
         <input
-          className="border-0 w-11/12 h-10 rounded-md rounded-r-none p-2"
+          className="border-0 w-11/12 h-10 rounded-md rounded-r-none p-2 text-xs sm:text-sm"
           type="text"
           id="ingredient"
           placeholder="What's in your fridge?"
@@ -48,15 +46,15 @@ export default function SearchBar() {
           onKeyDown={handlekeydown}
         />
         <button
-          className="bg-[#3E7B27] h-10 rounded-l-none rounded-sm text-sm leading-none"
+          className="bg-[#3E7B27] h-10 rounded-l-none rounded-sm text-sm leading-none cursor-pointer"
           onClick={(event) => putinbasket(event, auth.inputval)}
         >
           Add to basket
         </button>
       </div>
-      <div className="flex gap-2 flex-row">
+      <div className="flex gap-2 flex-row overflow-x-auto max-w-full py-2">
         {auth.cbingredients.map((ingredient, key) => (
-          <label key={key} className="p-1 border-2 rounded-md">
+          <label key={key} className="p-1 border-2 rounded-md whitespace-nowrap">
             <input
               type="checkbox"
               className="w-4 m-1"
@@ -68,15 +66,14 @@ export default function SearchBar() {
         ))}
       </div>
       <div className="flex justify-center gap-4">
-        <button onClick={handleRecipe} className="bg-[#3E7B27] rounded-md w-32 h-10 border-2">
+        <button onClick={handleRecipe} className="bg-[#3E7B27] rounded-md w-32 h-10 border-2 cursor-pointer">
           Show Recipes
         </button>
-        {/* Refresh Button */}
         <button
           onClick={handleRecipe}
-          className="bg-gray-400 rounded-md w-10 h-10 border-2"
+          className="bg-gray-400 rounded-md w-10 h-10 border-2 flex justify-center items-center text-2xl cursor-pointer"
         >
-          ( )
+          <MdOutlineRefresh />
         </button>
       </div>
     </div>

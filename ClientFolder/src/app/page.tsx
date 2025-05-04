@@ -7,15 +7,15 @@ const WelcomePage = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/login'); // Or use '/signup' depending on your flow
+    router.push('/login'); 
   };
 
   return (
     <div className="bg-[#EFE3C2] min-h-screen flex flex-col justify-between">
-      {/* NavBar */}
+      
       <NavBar />
       
-      {/* Main Section */}
+      
       <section className="flex flex-col items-center justify-center py-16 px-6 text-center md:px-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#123524] mb-6">
           Welcome to Our Recipe Hub! 🍴
@@ -31,7 +31,7 @@ const WelcomePage = () => {
         </button>
       </section>
       
-      {/* Footer Section */}
+      
       <footer className="py-4 bg-[#3E7B27] text-center text-white">
         <p>&copy; 2025 Recipe Hub. All Rights Reserved.</p>
       </footer>
